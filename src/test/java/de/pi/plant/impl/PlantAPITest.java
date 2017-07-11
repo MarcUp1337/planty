@@ -29,6 +29,7 @@ class PlantAPITest {
 
     @Test
     void getHumidity() {
+        plantAPI.getHumidity(0);
     }
 
     @Test
