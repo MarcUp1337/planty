@@ -3,45 +3,46 @@ package de.pi.plant.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Spy;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
  * Created by Marcaroni on 11.07.2017.
  */
-class PlantAPITest {
+public class PlantAPITest {
 
-    @Spy
+    @Autowired
     PlantAPI plantAPI;
 
     @Before
-    void setUp() {
+    public void setUp() {
+        plantAPI = new PlantAPI();
     }
 
     @After
-    void tearDown() {
+    public void tearDown() {
     }
 
     @Test
-    void getPlant() {
+    public void getPlant() {
         plantAPI.getPlant(0);
     }
 
     @Test
-    void getHumidity() {
+    public void getHumidity() {
         plantAPI.getHumidity(0);
     }
 
     @Test
-    void addPlant() {
+    public void addPlant() {
     }
 
     @Test
-    void waterPlant() {
+    public void waterPlant() {
     }
 
     @Test
-    void getPlants() {
+    public void getPlants() {
     }
 
 }
