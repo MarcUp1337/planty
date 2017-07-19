@@ -29,7 +29,8 @@ public class PlantAPITest {
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
-    plantAPI = new PlantAPI(spiApi);
+    plantAPI = new PlantAPI();
+    plantAPI.setSpiApi(spiApi);
     Plant plantA = new Plant("PlantA", 0, 0);
     plantAPI.addPlant(plantA);
   }

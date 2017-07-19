@@ -24,9 +24,8 @@ public class PlantAPI {
 
 	private List<Plant> plants = new ArrayList<>();
 
+	@Autowired
 	private SPIApi spiApi;
-
-	public PlantAPI(SPIApi spiApi) { this.spiApi = spiApi; }
 
 	/**
 	 * 
@@ -126,5 +125,9 @@ public class PlantAPI {
 
 		this.plants.add(plant0);
 
+	}
+
+	public void setSpiApi(SPIApi spiApi) {
+		this.spiApi = spiApi;
 	}
 }
