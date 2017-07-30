@@ -11,13 +11,9 @@
 
 ######## edit ########
 
-Appname=Paywallproxy2
-java=/opt/escenic/java/bin/java
-jar=/opt/piApi/build/libs/piApi.jar
-#parameter=/opt/escenic/tools/paywallproxy/conf
-parameter=class://conf
-logfile=/opt/escenic/log/paywallproxy.log
-javaparameter="-Xmx512m -Xms512m -Dstage=live"
+Appname=planty
+jar= /opt/piApi/target/planty-0.1.0.jar
+logfile=/opt/piApi/log/planty.log
 ######################
 
 
@@ -56,7 +52,7 @@ start() {
   echo -n "Starting $Appname: "
 
   # Redirects default and error output to a log file
-  $java $javaparameter -jar $jar $parameter >> $logfile 2>&1 &
+  java -jar $jar >> $logfile 2>&1 &
   echo "OK"
 }
 
