@@ -52,6 +52,7 @@ public class SpiController {
     if (humidity > 70) {
       GpioPinDigitalOutput waterPin = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(
           plant.getWaterPumpAddr()), "WTR", PinState.HIGH);
+      waterPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
       waterPin.low();
       try {
         Thread.sleep(4000);
@@ -69,6 +70,11 @@ public class SpiController {
   private void startController() {
     gpioController = GpioFactory.getInstance();
     gpioController.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+    powerPin = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(sensorPowerAddr), "POW", PinState.LOW);
+    mosiOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiMosiAddr), "MOSI", PinState.LOW);
+    clockOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiClkAddr), "CLK", PinState.LOW);
+    chipSelectOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiCsAddr), "CS", PinState.LOW);
+    misoInput = gpioController.provisionDigitalInputPin(RaspiPin.getPinByAddress(spiMisoAddr), "MISO");
   }
 
   private void stopController() {
@@ -76,12 +82,6 @@ public class SpiController {
   }
 
   private void startHumidityPins() {
-    powerPin = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(sensorPowerAddr), "POW", PinState.LOW);
-    mosiOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiMosiAddr), "MOSI", PinState.LOW);
-    clockOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiClkAddr), "CLK", PinState.LOW);
-    chipSelectOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiCsAddr), "CS", PinState.LOW);
-    misoInput = gpioController.provisionDigitalInputPin(RaspiPin.getPinByAddress(spiMisoAddr), "MISO");
-
     powerPin.high();
     try {
       Thread.sleep(2000);
