@@ -2,14 +2,13 @@ package de.pi.plant.impl;
 
 import de.pi.plant.Plant;
 import de.pi.plant.PlantAPI;
-import de.piapi.gpio.SPIApi;
+import de.pi.plant.SpiController;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -18,19 +17,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Created by Marcaroni on 11.07.2017.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SPIApi.class})
+@ContextConfiguration(classes = {SpiController.class})
 public class PlantAPITest {
 
   PlantAPI plantAPI;
 
   @Mock
-  SPIApi spiApi;
+  SpiController spiController;
 
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
     plantAPI = new PlantAPI();
-    plantAPI.setSpiApi(spiApi);
+    plantAPI.setSpiController(spiController);
     Plant plantA = new Plant("PlantA", 0, 0);
     plantAPI.addPlant(plantA);
   }
@@ -46,7 +45,7 @@ public class PlantAPITest {
 
   @Test
   public void getHumidity() {
-    Mockito.when(spiApi.getHumidity(Mockito.anyInt())).thenReturn( 40);
+    Mockito.when(spiController.getHumidity(Mockito.anyInt())).thenReturn( 40);
     int actual = plantAPI.getHumidity(0).getBody();
     Assert.assertEquals(40, actual);
   }

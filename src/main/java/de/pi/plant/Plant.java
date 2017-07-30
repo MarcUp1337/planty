@@ -1,13 +1,13 @@
 package de.pi.plant;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({ "waterPumpAddr", "spiChannel", "name" })
 public class Plant {
 
   private int waterPumpAddr;
   private int spiChannel;
   private String name;
-
-  public Plant() {
-  }
 
   public Plant(String name, int waterPumpAddr, int spiChannel) {
 
@@ -38,6 +38,12 @@ public class Plant {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public void updete(Plant plant) {
+    setWaterPumpAddr(plant.getWaterPumpAddr());
+    setSpiChannel(plant.getSpiChannel());
+    setName(plant.getName());
   }
 
   @Override
