@@ -49,7 +49,7 @@ public class SpiController {
   public boolean waterPlant(Plant plant) {
     startController();
     boolean success = false;
-    if (getHumidity(plant.getSpiChannel()) > 70) {
+    if (readHumidity(plant.getSpiChannel()) < 70) {
       GpioPinDigitalOutput waterPin = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(
           plant.getWaterPumpAddr()), "WTR", PinState.LOW);
       waterPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
