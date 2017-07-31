@@ -126,7 +126,7 @@ public class PlantAPI {
 	@PostConstruct
 	private void initPlants() {
 		int spiChannel = 0;
-		int waterPumpAddr = 0;
+		int waterPumpAddr = 4;
 		String name = "Astronaut";
 
 		Plant plant0 = new Plant(name, waterPumpAddr, spiChannel);
