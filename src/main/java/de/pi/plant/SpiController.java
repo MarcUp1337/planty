@@ -34,8 +34,10 @@ public class SpiController {
    */
   public int getHumidity(int spiChannel) {
     startController();
+
     int volume = readHumidity(spiChannel);
-    stopController();
+
+    startController();
     return volume;
   }
 
@@ -46,42 +48,30 @@ public class SpiController {
    */
   public boolean waterPlant(Plant plant) {
     startController();
-
-    int humidity = readHumidity(plant.getSpiChannel());
     boolean success = false;
-    if (humidity > 70) {
+    if (getHumidity(plant.getSpiChannel()) > 70) {
       GpioPinDigitalOutput waterPin = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(
-          plant.getWaterPumpAddr()), "WTR", PinState.HIGH);
+          plant.getWaterPumpAddr()), "WTR", PinState.LOW);
       waterPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
-      waterPin.low();
+
+      waterPin.high();
       try {
         Thread.sleep(4000);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      waterPin.high();
+
+      waterPin.low();
+      gpioController.unprovisionPin(waterPin);
       success = true;
     }
-
     stopController();
     return success;
   }
 
-  private void startController() {
-    gpioController = GpioFactory.getInstance();
-    gpioController.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
-    powerPin = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(sensorPowerAddr), "POW", PinState.LOW);
-    mosiOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiMosiAddr), "MOSI", PinState.LOW);
-    clockOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiClkAddr), "CLK", PinState.LOW);
-    chipSelectOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiCsAddr), "CS", PinState.LOW);
-    misoInput = gpioController.provisionDigitalInputPin(RaspiPin.getPinByAddress(spiMisoAddr), "MISO");
-  }
+  private int readHumidity(int spiChannel) {
+    startHumidityPins();
 
-  private void stopController() {
-    gpioController.shutdown();
-  }
-
-  private void startHumidityPins() {
     powerPin.high();
     try {
       Thread.sleep(2000);
@@ -91,10 +81,6 @@ public class SpiController {
     chipSelectOutput.high();
     clockOutput.low();
     chipSelectOutput.low();
-  }
-
-  private int readHumidity(int spiChannel) {
-    startHumidityPins();
 
     int adccommand = spiChannel;
     adccommand |= 0x18; // 0x18: 00011000
@@ -129,7 +115,37 @@ public class SpiController {
     adcOut >>= 1; // Drop first bit
     int volume = (int) (adcOut / 10.23);
 
-    powerPin.low();
+    staopHumidityPins();
     return volume;
+  }
+
+  private void startController() {
+    gpioController = GpioFactory.getInstance();
+    gpioController.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+  }
+
+  private void stopController() {
+    gpioController.shutdown();
+  }
+
+  private void startHumidityPins() {
+    powerPin = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(sensorPowerAddr), "POW", PinState.LOW);
+    mosiOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiMosiAddr), "MOSI", PinState.LOW);
+    clockOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiClkAddr), "CLK", PinState.LOW);
+    chipSelectOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiCsAddr), "CS", PinState.LOW);
+    misoInput = gpioController.provisionDigitalInputPin(RaspiPin.getPinByAddress(spiMisoAddr), "MISO");
+  }
+
+  private void staopHumidityPins() {
+    releasePin(powerPin);
+    releasePin(mosiOutput);
+    releasePin(clockOutput);
+    releasePin(chipSelectOutput);
+    gpioController.unprovisionPin(misoInput);
+  }
+
+  private void releasePin(GpioPinDigitalOutput pin) {
+    pin.low();
+    gpioController.unprovisionPin(pin);
   }
 }
