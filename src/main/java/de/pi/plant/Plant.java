@@ -10,7 +10,6 @@ public class Plant {
   private String name;
 
   public Plant(String name, int waterPumpAddr, int spiChannel) {
-
     this.waterPumpAddr = waterPumpAddr;
     this.spiChannel = spiChannel;
     this.name = name;
@@ -46,7 +45,6 @@ public class Plant {
     setName(plant.getName());
   }
 
-  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
@@ -58,7 +56,6 @@ public class Plant {
     return name != null ? name.equals(that.name) : that.name == null;
   }
 
-  @Override
   public int hashCode() {
     int result = waterPumpAddr;
     result = 31 * result + spiChannel;

@@ -1,4 +1,4 @@
-package de.pi.plant;
+package de.plant.controller;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
@@ -8,7 +8,11 @@ import com.pi4j.io.gpio.PinPullResistance;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
 
+import de.pi.plant.Plant;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class SpiController {
@@ -32,13 +36,29 @@ public class SpiController {
    * @param spiChannel
    * @return
    */
-  public int getHumidity(int spiChannel) {
+  public synchronized int getHumidity(int spiChannel) {
     startController();
+    startHumidityPins();
 
     int volume = readHumidity(spiChannel);
 
+    staopHumidityPins();
     startController();
     return volume;
+  }
+
+  /**
+   * @return
+   */
+  public synchronized int[] getHumidity() {
+    startController();
+    startHumidityPins();
+
+    int[] volumes = readHumidity();
+
+    staopHumidityPins();
+    startController();
+    return volumes;
   }
 
   /**
@@ -46,7 +66,7 @@ public class SpiController {
    * @param plant
    * @return
    */
-  public boolean waterPlant(Plant plant) {
+  public synchronized boolean waterPlant(Plant plant) {
     startController();
     boolean success = false;
     if (readHumidity(plant.getSpiChannel()) < 70) {
@@ -70,9 +90,6 @@ public class SpiController {
   }
 
   private int readHumidity(int spiChannel) {
-    startHumidityPins();
-
-    powerPin.high();
     try {
       Thread.sleep(2000);
     } catch (InterruptedException e) {
@@ -115,8 +132,15 @@ public class SpiController {
     adcOut >>= 1; // Drop first bit
     int volume = (int) (adcOut / 10.23);
 
-    staopHumidityPins();
     return volume;
+  }
+
+  private int[] readHumidity() {
+    int[] humidities = new int[8];
+    for (int i = 0; i < 8; i++) {
+      humidities[i] = readHumidity(i);
+    }
+    return humidities;
   }
 
   private void startController() {
@@ -134,9 +158,11 @@ public class SpiController {
     clockOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiClkAddr), "CLK", PinState.LOW);
     chipSelectOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiCsAddr), "CS", PinState.LOW);
     misoInput = gpioController.provisionDigitalInputPin(RaspiPin.getPinByAddress(spiMisoAddr), "MISO");
+    powerPin.high();
   }
 
   private void staopHumidityPins() {
+    powerPin.low();
     releasePin(powerPin);
     releasePin(mosiOutput);
     releasePin(clockOutput);

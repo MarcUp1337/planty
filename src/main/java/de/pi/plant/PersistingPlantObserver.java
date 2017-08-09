@@ -1,5 +1,7 @@
 package de.pi.plant;
 
+import de.plant.api.PlantAPI;
+import de.plant.controller.PlantController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +15,11 @@ import java.util.List;
 public class PersistingPlantObserver implements PlantObserver{
 
   @Autowired
-  PlantAPI plantAPI;
+  PlantController plantController;
 
   @PostConstruct
   private void register() {
-    plantAPI.addPlantObserver(this);
+    plantController.addPlantObserver(this);
   }
 
   @Override
