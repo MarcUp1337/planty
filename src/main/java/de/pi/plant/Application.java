@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableAutoConfiguration
+@ComponentScan({"de.pi.plant", "de.plant"})
 public class Application {
 
 	public static void main(String[] args) throws InterruptedException {
