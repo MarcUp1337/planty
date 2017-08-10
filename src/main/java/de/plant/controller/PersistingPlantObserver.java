@@ -1,5 +1,7 @@
-package de.pi.plant;
+package de.plant.controller;
 
+import de.pi.plant.Plant;
+import de.pi.plant.PlantObserver;
 import de.plant.api.PlantAPI;
 import de.plant.controller.PlantController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import java.util.List;
  * Created by Marcaroni on 21.07.2017.
  */
 @Component
-public class PersistingPlantObserver implements PlantObserver{
+public class PersistingPlantObserver implements PlantObserver {
 
   @Autowired
   PlantController plantController;

@@ -1,4 +1,4 @@
-package de.pi.plant;
+package de.plant.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -11,7 +11,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("http://192.168.178.180", "http://localhost:63342",
+        registry.addMapping("/plant/**").allowedOrigins("http://192.168.178.180", "http://localhost:63342",
             "http://raspberrypi", "http://localhost:8080").allowedMethods("GET", "PUT", "POST", "OPTIONS");
     }
 }

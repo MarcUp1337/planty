@@ -5,10 +5,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import de.pi.plant.Plant;
-import de.pi.plant.PlantObserver;
 import de.plant.controller.PlantController;
 import de.plant.controller.PlantNotFoundException;
-import de.plant.controller.SpiController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
