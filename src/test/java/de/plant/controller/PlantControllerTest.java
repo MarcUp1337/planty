@@ -8,19 +8,18 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by Marcaroni on 02.08.2017.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SpiController.class})
+@RunWith(MockitoJUnitRunner.class)
+@ContextConfiguration(classes = {PlantController.class, SpiController.class})
 public class PlantControllerTest {
 
   @Autowired
@@ -38,8 +37,8 @@ public class PlantControllerTest {
   public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
-    plantA = new Plant("Plant A", 0, 0);
-    plantB = new Plant("Plant B", 2, 4);
+    plantA = new Plant("Plant A", 0, 0, 70, 15);
+    plantB = new Plant("Plant B", 2, 4, 70, 15);
 
     plants = Arrays.asList(plantA, plantB);
 

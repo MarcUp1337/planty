@@ -47,22 +47,6 @@ public class PlantAPI {
   }
 
   /**
-   * @param name
-   * @return
-   */
-  @RequestMapping(value = "/", method = RequestMethod.GET)
-  public @ResponseBody
-  ResponseEntity<Plant> getPlant(@RequestAttribute(value = "name") final String name) {
-    ResponseEntity responseEntity;
-    try {
-      responseEntity = ResponseEntity.ok(plantController.getPlant(name));
-    } catch (PlantNotFoundException e) {
-      responseEntity = new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    return responseEntity;
-  }
-
-  /**
    * @param plant
    * @return
    */
@@ -145,9 +129,11 @@ public class PlantAPI {
   private void initPlants() {
     int spiChannel = 0;
     int waterPumpAddr = 4;
+    int noWaterMark = 70;
+    int waterDuration = 15;
     String name = "Astronaut";
 
-    Plant plant0 = new Plant(name, waterPumpAddr, spiChannel);
+    Plant plant0 = new Plant(name, waterPumpAddr, spiChannel, noWaterMark, waterDuration);
 
     plantController.addPlant(plant0);
   }
