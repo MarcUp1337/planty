@@ -15,19 +15,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpiController {
 
-  @Value("de.plant.controller.spiClkAddr:14")
+  @Value("${de.plant.controller.spiClkAddr:14}")
   private int spiClkAddr;
 
-  @Value("de.plant.controller.spiMisoAddr:13")
+  @Value("${de.plant.controller.spiMisoAddr:13}")
   private int spiMisoAddr;
 
-  @Value("de.plant.controller.spiMosiAddr:12")
+  @Value("${de.plant.controller.spiMosiAddr:12}")
   private int spiMosiAddr;
 
-  @Value("de.plant.controller.spiCsAddr:10")
+  @Value("${de.plant.controller.spiCsAddr:10}")
   private int spiCsAddr;
 
-  @Value("de.plant.controller.sensorPowerAddr:27")
+  @Value("${de.plant.controller.sensorPowerAddr:27}")
   private int sensorPowerAddr;
 
   private GpioController gpioController;
