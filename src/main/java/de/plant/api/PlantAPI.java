@@ -129,9 +129,11 @@ public class PlantAPI {
   private void initPlants() {
     int spiChannel = 0;
     int waterPumpAddr = 4;
+    int noWaterMark = 70;
+    int waterDuration = 15;
     String name = "Astronaut";
 
-    Plant plant0 = new Plant(name, waterPumpAddr, spiChannel);
+    Plant plant0 = new Plant(name, waterPumpAddr, spiChannel, noWaterMark, waterDuration);
 
     plantController.addPlant(plant0);
   }

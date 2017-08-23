@@ -69,16 +69,16 @@ public class SpiController {
   public synchronized boolean waterPlant(Plant plant) {
     startController();
     boolean success = false;
-    if (readHumidity(plant.getSpiChannel()) < 70) {
+    if (readHumidity(plant.getSpiChannel()) < plant.getNoWaterMark()) {
       GpioPinDigitalOutput waterPin = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(
           plant.getWaterPumpAddr()), "WTR", PinState.LOW);
       waterPin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
 
       waterPin.high();
       try {
-        Thread.sleep(4000);
+        Thread.sleep(plant.getWaterDuration() * 1000);
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        System.out.println(e.getMessage());
       }
 
       waterPin.low();

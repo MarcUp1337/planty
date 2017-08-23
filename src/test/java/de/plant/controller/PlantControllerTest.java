@@ -10,9 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 /**
  * Created by Marcaroni on 02.08.2017.
  */
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = {PlantController.class, SpiController.class})
 public class PlantControllerTest {
 
@@ -41,8 +41,8 @@ public class PlantControllerTest {
   public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
-    plantA = new Plant("Plant A", 0, 0);
-    plantB = new Plant("Plant B", 2, 4);
+    plantA = new Plant("Plant A", 0, 0, 70, 15);
+    plantB = new Plant("Plant B", 2, 4, 70, 15);
 
     plants = Arrays.asList(plantA, plantB);
 
@@ -73,14 +73,14 @@ public class PlantControllerTest {
 
   @Test
   public void addPlant() throws PlantNotFoundException {
-    Plant plantC = new Plant("Plant C", 3, 5);
+    Plant plantC = new Plant("Plant C", 3, 5, 70, 15);
     plantController.addPlant(plantC);
     Assert.assertEquals("Plant{waterPumpAddr=3, spiChannel=5, name='Plant C'}", plantController.getPlant(2).toString());
   }
 
   @Test
   public void updetePlant() throws PlantNotFoundException {
-    Plant plantBPpdate = new Plant("Plant B", 1, 2);
+    Plant plantBPpdate = new Plant("Plant B", 1, 2, 70, 15);
     Plant plantBPpdated = plantController.updetePlant(0, plantBPpdate);
     Assert.assertEquals(plantBPpdate, plantBPpdated);
   }
