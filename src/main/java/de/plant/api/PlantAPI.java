@@ -47,22 +47,6 @@ public class PlantAPI {
   }
 
   /**
-   * @param name
-   * @return
-   */
-  @RequestMapping(value = "/", method = RequestMethod.GET)
-  public @ResponseBody
-  ResponseEntity<Plant> getPlant(@RequestAttribute(value = "name") final String name) {
-    ResponseEntity responseEntity;
-    try {
-      responseEntity = ResponseEntity.ok(plantController.getPlant(name));
-    } catch (PlantNotFoundException e) {
-      responseEntity = new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    return responseEntity;
-  }
-
-  /**
    * @param plant
    * @return
    */

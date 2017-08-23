@@ -1,15 +1,15 @@
 package de.pi.plant;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonPropertyOrder({ "waterPumpAddr", "spiChannel", "name" })
 public class Plant {
-
   private int waterPumpAddr;
   private int spiChannel;
   private String name;
 
-  public Plant(String name, int waterPumpAddr, int spiChannel) {
+  @JsonCreator
+  public Plant(@JsonProperty("name") String name, @JsonProperty("waterPumpAddr") int waterPumpAddr, @JsonProperty("spiChannel") int spiChannel) {
     this.waterPumpAddr = waterPumpAddr;
     this.spiChannel = spiChannel;
     this.name = name;
@@ -39,10 +39,11 @@ public class Plant {
     this.name = name;
   }
 
-  public void updete(Plant plant) {
+  public boolean updete(Plant plant) {
     setWaterPumpAddr(plant.getWaterPumpAddr());
     setSpiChannel(plant.getSpiChannel());
     setName(plant.getName());
+    return true;
   }
 
   public boolean equals(Object o) {
@@ -61,5 +62,14 @@ public class Plant {
     result = 31 * result + spiChannel;
     result = 31 * result + (name != null ? name.hashCode() : 0);
     return result;
+  }
+
+  @Override
+  public String toString() {
+    return "Plant{" +
+        "waterPumpAddr=" + waterPumpAddr +
+        ", spiChannel=" + spiChannel +
+        ", name='" + name + '\'' +
+        '}';
   }
 }

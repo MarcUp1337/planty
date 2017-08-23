@@ -27,25 +27,15 @@ public class PlantController {
     return plants;
   }
 
+  public void setPlants(List<Plant> plants) {
+    this.plants = plants;
+  }
+
   public Plant getPlant(int id) throws PlantNotFoundException {
     if (plants == null || plants.size() < id) {
       throw new PlantNotFoundException();
     }
     return plants.get(id);
-  }
-
-  public Plant getPlant(String name) throws PlantNotFoundException {
-    Plant plant = null;
-    for (Plant tmpPlant : plants) {
-      if (tmpPlant.getName().equals(name)) {
-        plant = tmpPlant;
-        break;
-      }
-    }
-    if (plant == null) {
-      throw new PlantNotFoundException();
-    }
-    return plant;
   }
 
   public boolean addPlant(Plant plant) {
@@ -59,21 +49,23 @@ public class PlantController {
   }
 
   public Plant updetePlant(int id, Plant plant) throws PlantNotFoundException {
-    Plant updatedPlant = null;
-    for (Plant tmpPlant1 : getPlants()) {
-      if (tmpPlant1.equals(plant)) {
-        tmpPlant1.updete(plant);
-        updatedPlant = tmpPlant1;
+    Plant updatedPlant = getPlant(id);
+    boolean updated = updatedPlant.updete(plant);
+    if (updated) {
+      for (PlantObserver plantObserver : plantObservers) {
+        plantObserver.updatePlants(plants);
       }
     }
-    if (updatedPlant == null) {
-      throw new PlantNotFoundException();
-    }
+    updatedPlant.updete(plant);
     return updatedPlant;
   }
 
   public int getHumidity(int id) throws PlantNotFoundException {
     return spiController.getHumidity(getPlant(id).getSpiChannel());
+  }
+
+  public int[] getHumidity() {
+    return spiController.getHumidity();
   }
 
   public List<Integer> getHumidity(int id, int interval) throws PlantNotFoundException {
