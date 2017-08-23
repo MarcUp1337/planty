@@ -14,7 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
@@ -44,7 +44,9 @@ public class PlantControllerTest {
     plantA = new Plant("Plant A", 0, 0, 70, 15);
     plantB = new Plant("Plant B", 2, 4, 70, 15);
 
-    plants = Arrays.asList(plantA, plantB);
+    plants = new ArrayList<>();
+    plants.add(plantA);
+    plants.add(plantB);
 
     plantController.setPlants(plants);
   }
@@ -62,8 +64,8 @@ public class PlantControllerTest {
   @Test
   public void getPlant_Valid() throws PlantNotFoundException {
     Assert.assertEquals(2, plantController.getPlants().size());
-    Assert.assertEquals("Plant{waterPumpAddr=0, spiChannel=0, name='Plant A'}", plantController.getPlant(0).toString());
-    Assert.assertEquals("Plant{waterPumpAddr=2, spiChannel=4, name='Plant B'}", plantController.getPlant(1).toString());
+    Assert.assertEquals("Plant{name='Plant A', waterPumpAddr=0, spiChannel=0, noWaterMark=70, waterDuration=15}", plantController.getPlant(0).toString());
+    Assert.assertEquals("Plant{name='Plant B', waterPumpAddr=2, spiChannel=4, noWaterMark=70, waterDuration=15}", plantController.getPlant(1).toString());
   }
 
   @Test(expected = PlantNotFoundException.class)
@@ -75,7 +77,7 @@ public class PlantControllerTest {
   public void addPlant() throws PlantNotFoundException {
     Plant plantC = new Plant("Plant C", 3, 5, 70, 15);
     plantController.addPlant(plantC);
-    Assert.assertEquals("Plant{waterPumpAddr=3, spiChannel=5, name='Plant C'}", plantController.getPlant(2).toString());
+    Assert.assertEquals("Plant{name='Plant C', waterPumpAddr=3, spiChannel=5, noWaterMark=70, waterDuration=15}", plantController.getPlant(2).toString());
   }
 
   @Test

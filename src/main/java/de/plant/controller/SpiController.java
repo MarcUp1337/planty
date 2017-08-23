@@ -11,9 +11,6 @@ import com.pi4j.io.gpio.RaspiPin;
 import de.pi.plant.Plant;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 public class SpiController {
 
@@ -30,6 +27,9 @@ public class SpiController {
   private GpioPinDigitalOutput clockOutput;
   private GpioPinDigitalOutput chipSelectOutput;
   private GpioPinDigitalInput misoInput;
+
+  public SpiController() {}
+
 
   /**
    *
