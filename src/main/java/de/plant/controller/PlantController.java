@@ -28,7 +28,7 @@ public class PlantController {
 
   @PostConstruct
   private void init() {
-//    spiController.init(GpioFactory.getInstance());
+    spiController.init(GpioFactory.getInstance());
   }
 
   public List<Plant> getPlants() {
