@@ -8,6 +8,7 @@ import de.pi.plant.Plant;
 import de.plant.controller.PlantController;
 import de.plant.controller.PlantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -127,6 +128,7 @@ public class PlantAPI {
    */
   @PostConstruct
   private void initPlants() {
+
     int spiChannel = 0;
     int waterPumpAddr = 4;
     int noWaterMark = 70;

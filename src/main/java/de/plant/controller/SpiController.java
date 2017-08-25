@@ -12,23 +12,26 @@ import de.pi.plant.Plant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 @Component
 public class SpiController {
 
-  @Value("${de.plant.controller.spiClkAddr:14}")
-  private int spiClkAddr;
+  // @Values are not ready in constructor!
+  @Value("${de.plant.controller.spiClkAddr}")
+  int spiClkAddr;
 
-  @Value("${de.plant.controller.spiMisoAddr:13}")
-  private int spiMisoAddr;
+  @Value("${de.plant.controller.spiMisoAddr}")
+  int spiMisoAddr;
 
-  @Value("${de.plant.controller.spiMosiAddr:12}")
-  private int spiMosiAddr;
+  @Value("${de.plant.controller.spiMosiAddr}")
+  int spiMosiAddr;
 
-  @Value("${de.plant.controller.spiCsAddr:10}")
-  private int spiCsAddr;
+  @Value("${de.plant.controller.spiCsAddr}")
+  int spiCsAddr;
 
-  @Value("${de.plant.controller.sensorPowerAddr:27}")
-  private int sensorPowerAddr;
+  @Value("${de.plant.controller.sensorPowerAddr}")
+  int sensorPowerAddr;
 
   private GpioController gpioController;
   private GpioPinDigitalOutput powerPin;
@@ -36,22 +39,6 @@ public class SpiController {
   private GpioPinDigitalOutput clockOutput;
   private GpioPinDigitalOutput chipSelectOutput;
   private GpioPinDigitalInput misoInput;
-
-  public SpiController() {
-    gpioController = GpioFactory.getInstance();
-    gpioController.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
-
-    System.out.println("create powerPin [" + sensorPowerAddr + "]");
-    powerPin = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(sensorPowerAddr), "POW", PinState.LOW);
-    System.out.println("create mosiOutput [" + spiMosiAddr + "]");
-    mosiOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiMosiAddr), "MOSI", PinState.LOW);
-    System.out.println("create clockOutput [" + spiClkAddr + "]");
-    clockOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiClkAddr), "CLK", PinState.LOW);
-    System.out.println("create chipSelectOutput [" + spiCsAddr + "]");
-    chipSelectOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(spiCsAddr), "CS", PinState.LOW);
-    System.out.println("create misoInput [" + spiMisoAddr + "]");
-    misoInput = gpioController.provisionDigitalInputPin(RaspiPin.getPinByAddress(spiMisoAddr), "MISO");
-  }
 
   /**
    *
@@ -173,5 +160,25 @@ public class SpiController {
       humidities[i] = readHumidity(i);
     }
     return humidities;
+  }
+
+  public void init(GpioController gpioController){
+    this.gpioController = gpioController;
+    gpioController.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+
+    System.out.println("create powerPin [" + sensorPowerAddr + "]");
+    powerPin = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(new Integer(sensorPowerAddr)), "POW", PinState.LOW);
+
+    System.out.println("create mosiOutput [" + spiMosiAddr + "]");
+    mosiOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(new Integer(spiMosiAddr)), "MOSI", PinState.LOW);
+
+    System.out.println("create clockOutput [" + spiClkAddr + "]");
+    clockOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(new Integer(spiClkAddr)), "CLK", PinState.LOW);
+
+    System.out.println("create chipSelectOutput [" + spiCsAddr + "]");
+    chipSelectOutput = gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(new Integer(spiCsAddr)), "CS", PinState.LOW);
+
+    System.out.println("create misoInput [" + spiMisoAddr + "]");
+    misoInput = gpioController.provisionDigitalInputPin(RaspiPin.getPinByAddress(new Integer(spiMisoAddr)), "MISO");
   }
 }

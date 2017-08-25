@@ -1,10 +1,13 @@
 package de.plant.controller;
 
+import com.pi4j.io.gpio.GpioFactory;
 import de.pi.plant.Plant;
 import de.pi.plant.PlantObserver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +25,11 @@ public class PlantController {
 
   @Autowired
   private SpiController spiController;
+
+  @PostConstruct
+  private void init() {
+//    spiController.init(GpioFactory.getInstance());
+  }
 
   public List<Plant> getPlants() {
     return plants;
@@ -82,4 +90,5 @@ public class PlantController {
   public void addPlantObserver(PlantObserver plantObserver) {
     plantObservers.add(plantObserver);
   }
+
 }
