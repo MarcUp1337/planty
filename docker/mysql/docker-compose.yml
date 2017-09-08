@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  mysql.oss:
+    image: mysql:latest
+    hostname: mysql.planty
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: planty
+      MYSQL_PASSWORD: planty
+      MYSQL_DATABASE: planty
+    container_name: mysql.planty
+    volumes:
+      - ./data:/var/lib/mysql:rw
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql

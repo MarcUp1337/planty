@@ -1,0 +1,2 @@
+# create docker container based on latest mysql image
+docker run --name=mysql.planty -e MYSQL_USER=planty -e MYSQL_PASSWORD=planty -e MYSQL_DATABASE=planty -e MYSQL_ALLOW_EMPTY_PASSWORD=yes --volume /c/workspace/planty/docker/mysql/data:/var/lib/mysql -p 3306:3306 mysql:latest

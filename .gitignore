@@ -1,5 +1,6 @@
 # Compiled class file
 *.class
+/docker/mysql/data
 /target
 .idea/*
 .idea/compiler.xml
