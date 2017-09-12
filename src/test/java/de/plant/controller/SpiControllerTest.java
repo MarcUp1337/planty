@@ -1,7 +1,6 @@
 package de.plant.controller;
 
 import com.pi4j.io.gpio.GpioController;
-import de.pi.plant.Plant;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

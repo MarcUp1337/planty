@@ -1,6 +1,6 @@
 package de.plant.controller;
 
-import de.pi.plant.Plant;
+import de.plant.data.Plant;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
