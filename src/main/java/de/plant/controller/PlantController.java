@@ -1,13 +1,10 @@
 package de.plant.controller;
 
 import com.pi4j.io.gpio.GpioFactory;
-import de.pi.plant.Plant;
-import de.pi.plant.PlantObserver;
+import de.plant.data.Plant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +47,7 @@ public class PlantController {
     boolean added = plants.add(plant);
     if (added) {
       for (PlantObserver plantObserver : plantObservers) {
-        plantObserver.updatePlants(plants);
+        plantObserver.addPlant(plant);
       }
     }
     return added;
@@ -61,10 +58,9 @@ public class PlantController {
     boolean updated = updatedPlant.updete(plant);
     if (updated) {
       for (PlantObserver plantObserver : plantObservers) {
-        plantObserver.updatePlants(plants);
+        plantObserver.updatePlant(plant);
       }
     }
-    updatedPlant.updete(plant);
     return updatedPlant;
   }
 

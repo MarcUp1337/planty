@@ -1,6 +1,6 @@
 USE planty;
 
-CREATE TABLE plants
+CREATE TABLE plant
 (
   id INT PRIMARY KEY AUTO_INCREMENT,
   name CHAR(255),
@@ -9,13 +9,13 @@ CREATE TABLE plants
   water_duration INT,
   no_water_mark INT
 );
-CREATE UNIQUE INDEX plants_id_uindex ON plants (id);
+CREATE UNIQUE INDEX plant_id_uindex ON plant (id);
 
 CREATE TABLE hummidity
 (
   plant INT,
   hummidity INT,
   timestamp DATETIME NULL,
-  CONSTRAINT plant___fk FOREIGN KEY (plant) REFERENCES plants (id)
+  CONSTRAINT plant___fk FOREIGN KEY (plant) REFERENCES plant (id)
 );
 

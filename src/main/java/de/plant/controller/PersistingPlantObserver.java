@@ -1,9 +1,7 @@
 package de.plant.controller;
 
-import de.pi.plant.Plant;
-import de.pi.plant.PlantObserver;
-import de.plant.api.PlantAPI;
-import de.plant.controller.PlantController;
+import de.plant.data.Plant;
+import de.plant.data.PlantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,13 +17,22 @@ public class PersistingPlantObserver implements PlantObserver {
   @Autowired
   PlantController plantController;
 
+  @Autowired
+  PlantRepository plantRepository;
+
   @PostConstruct
   private void register() {
     plantController.addPlantObserver(this);
   }
 
   @Override
-  public void updatePlants(List<Plant> plants) {
-
+  public void addPlant(Plant plant) {
+    plantRepository.save(plant);
   }
+
+  @Override
+  public void updatePlant(Plant plant) {
+    plantRepository.save(plant);
+  }
+
 }

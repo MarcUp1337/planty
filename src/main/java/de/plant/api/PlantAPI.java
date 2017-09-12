@@ -4,11 +4,10 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import de.pi.plant.Plant;
+import de.plant.data.Plant;
 import de.plant.controller.PlantController;
 import de.plant.controller.PlantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,7 @@ public class PlantAPI {
   /**
    * @return
    */
-  @RequestMapping(value = "/all", method = RequestMethod.GET)
+  @GetMapping(value = "/all")
   public @ResponseBody
   List<Plant> getPlants() {
     return plantController.getPlants();
@@ -35,7 +34,7 @@ public class PlantAPI {
    * @param id
    * @return
    */
-  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  @GetMapping(value = "/{id}")
   public @ResponseBody
   ResponseEntity<Plant> getPlant(@PathVariable(value = "id") final int id) {
     ResponseEntity responseEntity;
@@ -51,7 +50,7 @@ public class PlantAPI {
    * @param plant
    * @return
    */
-  @RequestMapping(method = RequestMethod.PUT)
+  @PutMapping
   public @ResponseBody
   ResponseEntity addPlant(@RequestBody Plant plant) {
     ResponseEntity responseEntity;
@@ -67,7 +66,7 @@ public class PlantAPI {
    * @param id
    * @return
    */
-  @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+  @PostMapping(value = "/{id}")
   public @ResponseBody
   ResponseEntity<Plant> updatePlant(@PathVariable(value = "id") final int id, @RequestBody Plant plant) {
     ResponseEntity responseEntity;
@@ -83,7 +82,7 @@ public class PlantAPI {
    * @param id
    * @return
    */
-  @RequestMapping(value = "/{id}/humidity", method = RequestMethod.GET)
+  @GetMapping(value = "/{id}/humidity")
   public ResponseEntity<Integer> getHumidity(@PathVariable(value = "id") final int id) {
     ResponseEntity responseEntity;
     try {
@@ -98,7 +97,7 @@ public class PlantAPI {
    * @param id
    * @return
    */
-  @RequestMapping(value = "/{id}/humidity/{interval}", method = RequestMethod.GET)
+  @GetMapping(value = "/{id}/humidity/{interval}")
   public ResponseEntity<Integer> getHumidity(@PathVariable(value = "id") final int id, @PathVariable(value = "id") final int interval) {
     ResponseEntity responseEntity;
     try {
@@ -112,7 +111,7 @@ public class PlantAPI {
   /**
    * @param id
    */
-  @RequestMapping(value = "/{id}/water", method = RequestMethod.GET)
+  @GetMapping(value = "/{id}/water")
   public ResponseEntity<Boolean> waterPlant(@PathVariable(value = "id") final int id) {
     ResponseEntity responseEntity;
     try {

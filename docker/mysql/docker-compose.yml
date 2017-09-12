@@ -7,10 +7,10 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_USER: planty
-      MYSQL_PASSWORD: planty
-      MYSQL_DATABASE: planty
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_USER: 'planty'
+      MYSQL_PASSWORD: 'planty'
+      MYSQL_DATABASE: 'planty'
     container_name: mysql.planty
     volumes:
       - ./data:/var/lib/mysql:rw
