@@ -1,2 +1,24 @@
-# create docker container based on latest mysql image
+#----------------------- generate selfsigned keystore -----------------------#
+
+keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore.jks -storepass planty -validity 360
+
+
+#----------------------- create client key- and truststore from generated mysql certificates -----------------------#
+# https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-using-ssl.html #
+
+# "create a truststore in the current directory , and import the server's CA certificate"
+keytool -import -alias mysqlServerCACert -file ca.pem -keystore truststore
+
+# "Importing an existing certificate requires the certificate to be in DER format.
+# You can use openssl to convert an existing certificate into the new format."
+openssl x509 -outform DER -in client-cert.pem -out client.cert
+
+# "Now import the converted certificate into your keystore using keytool"
+keytool -import -file client.cert -keystore keystore -alias mysqlClientCertificate
+
+
+#----------------------- create docker container based on latest mysql image -----------------------#
+
 docker run --name=mysql.planty -e MYSQL_USER=planty -e MYSQL_PASSWORD=planty -e MYSQL_DATABASE=planty -e MYSQL_ALLOW_EMPTY_PASSWORD=yes --volume /c/workspace/planty/docker/mysql/data:/var/lib/mysql -p 3306:3306 mysql:latest
+
+
