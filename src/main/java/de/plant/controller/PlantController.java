@@ -2,7 +2,10 @@ package de.plant.controller;
 
 import com.pi4j.io.gpio.GpioFactory;
 import de.plant.data.Plant;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -16,8 +19,8 @@ import java.util.Map;
  */
 @Component
 public class PlantController {
+  final static Logger LOG = Logger.getLogger(PlantController.class);
 
-  private List<PlantObserver> plantObservers = new ArrayList<>();
   private List<Plant> plants = new ArrayList<>();
   private Map<Integer, List<Integer>> humidityHistory = new HashMap<>();
 
@@ -46,22 +49,12 @@ public class PlantController {
 
   public boolean addPlant(Plant plant) {
     boolean added = plants.add(plant);
-    if (added) {
-      for (PlantObserver plantObserver : plantObservers) {
-        plantObserver.addPlant(plant);
-      }
-    }
     return added;
   }
 
   public Plant updetePlant(int id, Plant plant) throws PlantNotFoundException {
     Plant updatedPlant = getPlant(id);
     boolean updated = updatedPlant.updete(plant);
-    if (updated) {
-      for (PlantObserver plantObserver : plantObservers) {
-        plantObserver.updatePlant(plant);
-      }
-    }
     return updatedPlant;
   }
 
@@ -83,9 +76,4 @@ public class PlantController {
   public boolean waterPlant(int id) throws PlantNotFoundException {
     return this.spiController.waterPlant(getPlant(id));
   }
-
-  public void addPlantObserver(PlantObserver plantObserver) {
-    plantObservers.add(plantObserver);
-  }
-
 }

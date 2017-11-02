@@ -13,11 +13,6 @@ import org.springframework.context.annotation.PropertySource;
 public class Application {
 
 	public static void main(String[] args) {
-		System.setProperty("javax.net.ssl.keyStore","keystore");
-		System.setProperty("javax.net.ssl.keyStorePassword","planty");
-		System.setProperty("javax.net.ssl.trustStore","truststore");
-		System.setProperty("javax.net.ssl.trustStorePassword","planty");
-
 		SpringApplication.run(Application.class, args);
 		System.out.println("I'm running.");
 	}

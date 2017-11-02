@@ -25,6 +25,7 @@ public class IntegrationTest {
     TestRestTemplate testRestTemplate = new TestRestTemplate("admin","PlantsVsZombies",
         TestRestTemplate.HttpClientOption.ENABLE_COOKIES);
     ResponseEntity<List> plantResponse = testRestTemplate.getForEntity("http://localhost:" + port + "/plant/all", List.class);
+
     Assert.assertEquals(plantResponse.getStatusCode(), HttpStatus.OK);
     Assert.assertNotNull(plantResponse.getBody());
   }
@@ -34,19 +35,21 @@ public class IntegrationTest {
     TestRestTemplate testRestTemplate = new TestRestTemplate("admin","PlantsVsZombies",
         TestRestTemplate.HttpClientOption.ENABLE_COOKIES);
     ResponseEntity<Plant> plantResponse = testRestTemplate.getForEntity("http://localhost:" + port + "/plant/0", Plant.class, "");
+
     Assert.assertEquals(plantResponse.getStatusCode(), HttpStatus.OK);
     Assert.assertNotNull(plantResponse.getBody());
   }
 
   @Test
   public void plantyPut() {
+    Plant testPlant = new Plant("Test", 0, 1, 70, 10);
     TestRestTemplate testRestTemplate = new TestRestTemplate("admin","PlantsVsZombies",
         TestRestTemplate.HttpClientOption.ENABLE_COOKIES);
-    testRestTemplate.put("http://localhost:" + port + "/plant",
-        new Plant("Test", 0, 1, 70, 10));
+    testRestTemplate.put("http://localhost:" + port + "/plant", testPlant);
     ResponseEntity<Plant> plantResponse = testRestTemplate.getForEntity("http://localhost:" + port + "/plant/1", Plant.class);
+
     Assert.assertEquals(plantResponse.getStatusCode(), HttpStatus.OK);
-    Assert.assertNotNull(plantResponse.getBody());
+    Assert.assertEquals(testPlant, plantResponse.getBody());
   }
 
   @Test
@@ -56,6 +59,7 @@ public class IntegrationTest {
     testRestTemplate.postForEntity("http://localhost:" + port + "/plant",
         new Plant("Test", 0, 1, 70, 10), Plant.class);
     ResponseEntity<Plant> plantResponse = testRestTemplate.getForEntity("http://localhost:" + port + "/plant/0", Plant.class, "");
+
     Assert.assertEquals(plantResponse.getStatusCode(), HttpStatus.OK);
     Assert.assertNotNull(plantResponse.getBody());
   }
@@ -64,6 +68,17 @@ public class IntegrationTest {
   public  void plantyConnectionRefused() {
     TestRestTemplate testRestTemplate = new TestRestTemplate();
     ResponseEntity<Plant> plantResponse = testRestTemplate.getForEntity("http://localhost:" + port + "/plant/0", Plant.class, "");
+
     Assert.assertEquals(plantResponse.getStatusCode(), HttpStatus.UNAUTHORIZED);
+  }
+
+  @Test
+  public void plantyGetAllAdded() {
+    TestRestTemplate testRestTemplate = new TestRestTemplate("admin","PlantsVsZombies",
+        TestRestTemplate.HttpClientOption.ENABLE_COOKIES);
+    ResponseEntity<List> plantResponse = testRestTemplate.getForEntity("http://localhost:" + port + "/plant/all", List.class);
+
+    Assert.assertEquals(plantResponse.getStatusCode(), HttpStatus.OK);
+    Assert.assertNotNull(plantResponse.getBody());
   }
 }

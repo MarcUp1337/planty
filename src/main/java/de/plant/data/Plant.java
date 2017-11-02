@@ -3,26 +3,12 @@ package de.plant.data;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-@Entity
 public class Plant {
 
-  @Id
-  @GeneratedValue
-  private int id;
-  @Column(name = "name")
   private String name;
-  @Column(name = "water_pin")
   private int waterPumpAddr;
-  @Column(name = "sensor_pin")
   private int spiChannel;
-  @Column(name = "no_water_mark")
   private int noWaterMark;
-  @Column(name = "water_duration")
   private int waterDuration;
 
   @JsonCreator
